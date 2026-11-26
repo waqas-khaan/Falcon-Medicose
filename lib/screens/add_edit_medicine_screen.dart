@@ -218,7 +218,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
     final isEditing = widget.medicine != null;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(isEditing ? 'Edit Medicine' : 'Add New Medicine'),
         actions: [
@@ -238,10 +238,13 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 760),
           child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             padding: const EdgeInsets.all(18),
             child: Form(
               key: _formKey,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Basic Information Card
@@ -274,6 +277,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                         children: [
                           Expanded(
                             child: DropdownButtonFormField<String>(
+                              isExpanded: true,
                               value: _selectedCategory,
                               decoration: _inputDecor(
                                 'Category',
@@ -282,8 +286,11 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                               items: AppConstants.medicineCategories.map((c) {
                                 return DropdownMenuItem(
                                   value: c,
-                                  child: Text(c,
-                                      style: const TextStyle(fontSize: 13)),
+                                  child: Text(
+                                    c,
+                                    style: const TextStyle(fontSize: 13),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 );
                               }).toList(),
                               onChanged: (val) {
@@ -296,6 +303,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: DropdownButtonFormField<UnitType>(
+                              isExpanded: true,
                               value: _selectedUnit,
                               decoration: _inputDecor(
                                 'Unit Type',
@@ -304,8 +312,11 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                               items: UnitType.values.map((u) {
                                 return DropdownMenuItem(
                                   value: u,
-                                  child: Text(u.displayName,
-                                      style: const TextStyle(fontSize: 13)),
+                                  child: Text(
+                                    u.displayName,
+                                    style: const TextStyle(fontSize: 13),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 );
                               }).toList(),
                               onChanged: (val) {
@@ -574,11 +585,12 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
         color: AppColors.primaryLight,
       ),
       hintText: hint,
-      prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 17),
+      prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 16),
+      prefixIconConstraints: const BoxConstraints(minWidth: 32, minHeight: 32),
       isDense: true,
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.8),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.border),
@@ -599,6 +611,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -611,12 +624,14 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                 child: Icon(icon, size: 16, color: AppColors.primaryLight),
               ),
               const SizedBox(width: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             ],
@@ -736,10 +751,14 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
             return Column(
               children: [
                 const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 4,
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.business_center_outlined,
                             size: 14, color: Color(0xFF6366F1)),

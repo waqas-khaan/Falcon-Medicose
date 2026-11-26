@@ -102,6 +102,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<Medicine>(
+                    isExpanded: true,
                     value: selectedMed,
                     decoration: _dialogInputDecor(
                         'Select Medicine', Icons.medication_rounded),
@@ -109,6 +110,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                       return DropdownMenuItem(
                           value: m,
                           child: Text(m.name,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 13)));
                     }).toList(),
                     onChanged: (val) {
@@ -124,6 +126,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<Supplier>(
+                    isExpanded: true,
                     value: selectedSupplier,
                     decoration: _dialogInputDecor(
                         'Supplier (Optional)', Icons.local_shipping_rounded),
@@ -133,6 +136,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                       ..._suppliers.map((s) => DropdownMenuItem(
                           value: s,
                           child: Text(s.name,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 13)))),
                     ],
                     onChanged: (val) =>
@@ -335,6 +339,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
 
                   // Supplier
                   DropdownButtonFormField<Supplier>(
+                    isExpanded: true,
                     value: selectedSupplier,
                     decoration: _dialogInputDecor(
                         'Supplier', Icons.local_shipping_rounded),
@@ -343,7 +348,9 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                           value: null,
                           child: Text('No Supplier / Cash Purchase')),
                       ..._suppliers.map((s) => DropdownMenuItem(
-                          value: s, child: Text(s.name))),
+                          value: s,
+                          child: Text(s.name,
+                              overflow: TextOverflow.ellipsis))),
                     ],
                     onChanged: (val) =>
                         setSheetState(() => selectedSupplier = val),
@@ -384,6 +391,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       DropdownButtonFormField<Medicine>(
+                                        isExpanded: true,
                                         value: curMed,
                                         decoration: _dialogInputDecor(
                                             'Medicine',
@@ -392,6 +400,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                                             .map((m) => DropdownMenuItem(
                                                 value: m,
                                                 child: Text(m.name,
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(
                                                         fontSize: 13))))
                                             .toList(),
@@ -663,9 +672,10 @@ class _PurchasesScreenState extends State<PurchasesScreen>
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 18),
+      prefixIconConstraints: const BoxConstraints(minWidth: 34, minHeight: 34),
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.8),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.border),

@@ -89,6 +89,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<Medicine>(
+                    isExpanded: true,
                     value: selectedMed,
                     decoration: _dialogInputDecor(
                         'Medicine *', Icons.medication_rounded),
@@ -96,6 +97,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                         .map((m) => DropdownMenuItem(
                             value: m,
                             child: Text(m.name,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(fontSize: 13))))
                         .toList(),
                     onChanged: (val) {
@@ -111,6 +113,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<Customer>(
+                    isExpanded: true,
                     value: selectedCust,
                     decoration: _dialogInputDecor(
                         'Customer (Optional)', Icons.person_outline_rounded),
@@ -120,6 +123,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                       ..._customers.map((c) => DropdownMenuItem(
                           value: c,
                           child: Text(c.name,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 13)))),
                     ],
                     onChanged: (val) =>
@@ -237,6 +241,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<Medicine>(
+                    isExpanded: true,
                     value: selectedMed,
                     decoration: _dialogInputDecor(
                         'Medicine *', Icons.medication_rounded),
@@ -245,6 +250,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                         value: m,
                         child: Text(
                             '${m.name} (Stock: ${m.currentStock.toInt()})',
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 13)),
                       );
                     }).toList(),
@@ -261,6 +267,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<Supplier>(
+                    isExpanded: true,
                     value: selectedSup,
                     decoration: _dialogInputDecor(
                         'Supplier (Optional)', Icons.local_shipping_rounded),
@@ -270,6 +277,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                       ..._suppliers.map((s) => DropdownMenuItem(
                           value: s,
                           child: Text(s.name,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(fontSize: 13)))),
                     ],
                     onChanged: (val) =>
@@ -372,9 +380,10 @@ class _ReturnsScreenState extends State<ReturnsScreen>
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 18),
+      prefixIconConstraints: const BoxConstraints(minWidth: 34, minHeight: 34),
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.8),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.border),

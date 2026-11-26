@@ -78,6 +78,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
+                    isExpanded: true,
                     value: selectedCat,
                     decoration:
                         _dialogInput('Category', Icons.category_rounded),
@@ -85,7 +86,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         .map((c) => DropdownMenuItem(
                             value: c,
                             child:
-                                Text(c, style: const TextStyle(fontSize: 13))))
+                                Text(c, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13))))
                         .toList(),
                     onChanged: (val) {
                       if (val != null) {
@@ -182,9 +183,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       labelText: label,
       hintText: hint,
       prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 18),
+      prefixIconConstraints: const BoxConstraints(minWidth: 34, minHeight: 34),
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.8),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.border),
