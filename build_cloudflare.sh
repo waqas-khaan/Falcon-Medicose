@@ -20,7 +20,6 @@ echo "=== 4. Copying SQLite Web Worker Binaries & Cloudflare Config ==="
 cp -f web/sqflite_sw.js build/web/
 cp -f web/sqlite3.wasm build/web/
 cp -f web/_headers build/web/
-cp -f web/_redirects build/web/
 
 echo "=== 5. Verification of build/web ==="
 ls -la build/web/
