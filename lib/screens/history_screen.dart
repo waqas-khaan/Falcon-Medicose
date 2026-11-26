@@ -288,7 +288,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ? "Loan Added"
                                         : "Payment Received",
                                     style: TextStyle(
-                                      color: color,
+                                      color: color, 
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
                                     ),
