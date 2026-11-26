@@ -25,6 +25,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
   late TextEditingController _retailPriceCtrl;
   late TextEditingController _sellingPriceCtrl;
   late TextEditingController _discountCtrl;
+  late TextEditingController _extraDiscountCtrl;
   late TextEditingController _stockCtrl;
   late TextEditingController _minStockCtrl;
   late TextEditingController _expiryDateCtrl;
@@ -67,6 +68,10 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
         text: m != null && m.discountPercent > 0
             ? m.discountPercent.toStringAsFixed(0)
             : '0');
+    _extraDiscountCtrl = TextEditingController(
+        text: m != null && m.extraDiscountPercent > 0
+            ? m.extraDiscountPercent.toStringAsFixed(0)
+            : '0');
     _stockCtrl = TextEditingController(
         text: m != null ? m.currentStock.toStringAsFixed(0) : '0');
     _minStockCtrl = TextEditingController(
@@ -90,6 +95,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
     });
     _sellingPriceCtrl.addListener(() => setState(() {}));
     _discountCtrl.addListener(() => setState(() {}));
+    _extraDiscountCtrl.addListener(() => setState(() {}));
   }
 
   @override
@@ -100,6 +106,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
     _retailPriceCtrl.dispose();
     _sellingPriceCtrl.dispose();
     _discountCtrl.dispose();
+    _extraDiscountCtrl.dispose();
     _stockCtrl.dispose();
     _minStockCtrl.dispose();
     _expiryDateCtrl.dispose();
@@ -152,6 +159,8 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
       final sellingPrice = double.tryParse(_sellingPriceCtrl.text.trim()) ??
           (retailPrice > 0 ? retailPrice : 0.0);
       final discount = double.tryParse(_discountCtrl.text.trim()) ?? 0.0;
+      final extraDiscount =
+          double.tryParse(_extraDiscountCtrl.text.trim()) ?? 0.0;
       final stock = double.tryParse(_stockCtrl.text.trim()) ?? 0.0;
       final minStock = double.tryParse(_minStockCtrl.text.trim()) ?? 5.0;
       final expiry = _expiryDateCtrl.text.trim().isNotEmpty
@@ -168,6 +177,7 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
         retailPrice: retailPrice > 0 ? retailPrice : sellingPrice,
         sellingPrice: sellingPrice,
         discountPercent: discount,
+        extraDiscountPercent: extraDiscount,
         currentStock: stock,
         minStockLevel: minStock,
         nearestExpiryDate: expiry,
@@ -398,6 +408,71 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _extraDiscountCtrl,
+                              keyboardType: const TextInputType.numberWithOptions(
+                                  decimal: true),
+                              decoration: _inputDecor(
+                                'Extra Disc %',
+                                Icons.percent_rounded,
+                                hint: '0%',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF6366F1)
+                                    .withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: const Color(0xFF6366F1)
+                                        .withValues(alpha: 0.25)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.calculate_outlined,
+                                      color: Color(0xFF6366F1), size: 18),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          'Total Wholesale Disc',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.textSecondary,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${((double.tryParse(_discountCtrl.text.trim()) ?? 0.0) + (double.tryParse(_extraDiscountCtrl.text.trim()) ?? 0.0)).toInt()}% Off',
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w800,
+                                            color: Color(0xFF6366F1),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
                       _buildLivePriceSummary(),
                     ],
                   ),
@@ -491,11 +566,19 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
   InputDecoration _inputDecor(String label, IconData icon, {String? hint}) {
     return InputDecoration(
       labelText: label,
+      labelStyle:
+          const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+      floatingLabelStyle: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w700,
+        color: AppColors.primaryLight,
+      ),
       hintText: hint,
-      prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 18),
+      prefixIcon: Icon(icon, color: AppColors.primaryLight, size: 17),
+      isDense: true,
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.8),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.border),
@@ -635,6 +718,59 @@ class _AddEditMedicineScreenState extends State<AddEditMedicineScreen> {
               ],
             ),
           ],
+          // Wholesale & Extra Discount Summary
+          Builder(builder: (context) {
+            final wholesaleDisc =
+                double.tryParse(_discountCtrl.text.trim()) ?? 0.0;
+            final extraDisc =
+                double.tryParse(_extraDiscountCtrl.text.trim()) ?? 0.0;
+            final totalDisc = wholesaleDisc + extraDisc;
+            if (totalDisc <= 0) return const SizedBox.shrink();
+
+            final basePrice = retail > 0 ? retail : sell;
+            final wholesaleNet = basePrice > 0
+                ? (basePrice - (basePrice * (totalDisc / 100)))
+                : basePrice;
+            final wholesaleMargin = wholesaleNet - cost;
+
+            return Column(
+              children: [
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.business_center_outlined,
+                            size: 14, color: Color(0xFF6366F1)),
+                        const SizedBox(width: 6),
+                        Text(
+                          extraDisc > 0
+                              ? 'Wholesale Rate (${wholesaleDisc.toInt()}% + ${extraDisc.toInt()}% extra = ${totalDisc.toInt()}%):'
+                              : 'Wholesale Rate (${wholesaleDisc.toInt()}% off):',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Rs. ${wholesaleNet.toStringAsFixed(1)} (Margin: Rs. ${wholesaleMargin.toStringAsFixed(1)})',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: wholesaleMargin >= 0
+                            ? const Color(0xFF6366F1)
+                            : AppColors.danger,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
         ],
       ),
     );

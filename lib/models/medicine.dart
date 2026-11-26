@@ -10,6 +10,7 @@ class Medicine {
   final double retailPrice;      // Retail / MRP (Printed price on medicine box)
   final double sellingPrice;     // Counter / POS Selling price to customers
   final double discountPercent;  // Default Wholesale discount %
+  final double extraDiscountPercent; // Extra / Special discount %
   final double currentStock;
   final double minStockLevel;
   final String? nearestExpiryDate; // YYYY-MM-DD
@@ -25,6 +26,7 @@ class Medicine {
     this.retailPrice = 0.0,
     required this.sellingPrice,
     this.discountPercent = 0.0,
+    this.extraDiscountPercent = 0.0,
     this.currentStock = 0.0,
     this.minStockLevel = 5.0,
     this.nearestExpiryDate,
@@ -36,6 +38,18 @@ class Medicine {
 
   /// Effective retail price (falls back to sellingPrice if retailPrice not set)
   double get effectiveRetailPrice => retailPrice > 0 ? retailPrice : sellingPrice;
+
+  /// Total combined discount percentage (Wholesale % + Extra %)
+  double get totalDiscountPercent => discountPercent + extraDiscountPercent;
+
+  /// Effective wholesale price after applying total discount
+  double get effectiveWholesalePrice {
+    final base = effectiveRetailPrice;
+    if (totalDiscountPercent > 0) {
+      return base - (base * (totalDiscountPercent / 100));
+    }
+    return base;
+  }
 
   /// Profit margin in Rs (Selling Price - Buying/Cost Price)
   double get profitMargin => sellingPrice - buyingPrice;
@@ -85,6 +99,7 @@ class Medicine {
       'buyingPrice': buyingPrice,
       'retailPrice': retailPrice > 0 ? retailPrice : sellingPrice,
       'discountPercent': discountPercent,
+      'extraDiscountPercent': extraDiscountPercent,
       'sellingPrice': sellingPrice,
       'currentStock': currentStock,
       'minStockLevel': minStockLevel,
@@ -105,6 +120,7 @@ class Medicine {
       buyingPrice: (map['buyingPrice'] as num?)?.toDouble() ?? 0.0,
       retailPrice: retail > 0 ? retail : selling,
       discountPercent: (map['discountPercent'] as num?)?.toDouble() ?? 0.0,
+      extraDiscountPercent: (map['extraDiscountPercent'] as num?)?.toDouble() ?? 0.0,
       sellingPrice: selling,
       currentStock: (map['currentStock'] as num?)?.toDouble() ?? 0.0,
       minStockLevel: (map['minStockLevel'] as num?)?.toDouble() ?? 5.0,
@@ -122,6 +138,7 @@ class Medicine {
     double? buyingPrice,
     double? retailPrice,
     double? discountPercent,
+    double? extraDiscountPercent,
     double? sellingPrice,
     double? currentStock,
     double? minStockLevel,
@@ -137,6 +154,7 @@ class Medicine {
       buyingPrice: buyingPrice ?? this.buyingPrice,
       retailPrice: retailPrice ?? this.retailPrice,
       discountPercent: discountPercent ?? this.discountPercent,
+      extraDiscountPercent: extraDiscountPercent ?? this.extraDiscountPercent,
       sellingPrice: sellingPrice ?? this.sellingPrice,
       currentStock: currentStock ?? this.currentStock,
       minStockLevel: minStockLevel ?? this.minStockLevel,

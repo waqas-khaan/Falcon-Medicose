@@ -496,6 +496,17 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                      if (m.discountPercent > 0 || m.extraDiscountPercent > 0)
+                        Text(
+                          m.extraDiscountPercent > 0
+                              ? 'Wholesale: ${m.totalDiscountPercent.toInt()}% (${m.discountPercent.toInt()}%+${m.extraDiscountPercent.toInt()}%)'
+                              : 'Wholesale: ${m.discountPercent.toInt()}%',
+                          style: const TextStyle(
+                            fontSize: 10.5,
+                            color: Color(0xFF6366F1),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                     ],
                   ),
                 ],

@@ -46,12 +46,19 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'clinic.db');
 
-    return await openDatabase(
+    final db = await openDatabase(
       path,
-      version: 6,
+      version: 7,
       onCreate: _createDatabase,
       onUpgrade: _upgradeDatabase,
     );
+
+    try {
+      await db.execute(
+          "ALTER TABLE medicines ADD COLUMN extraDiscountPercent REAL DEFAULT 0");
+    } catch (_) {}
+
+    return db;
   }
 
   static Future<void> _createDatabase(Database db, int version) async {
@@ -99,6 +106,7 @@ class DatabaseHelper {
         buyingPrice REAL DEFAULT 0,
         retailPrice REAL DEFAULT 0,
         discountPercent REAL DEFAULT 0,
+        extraDiscountPercent REAL DEFAULT 0,
         sellingPrice REAL DEFAULT 0,
         currentStock REAL DEFAULT 0,
         minStockLevel REAL DEFAULT 5,
@@ -331,6 +339,13 @@ class DatabaseHelper {
       try {
         await db.execute("ALTER TABLE medicines ADD COLUMN retailPrice REAL DEFAULT 0");
         await db.execute("UPDATE medicines SET retailPrice = sellingPrice WHERE retailPrice IS NULL OR retailPrice = 0");
+      } catch (_) {}
+    }
+
+    if (oldVersion < 7) {
+      try {
+        await db.execute(
+            "ALTER TABLE medicines ADD COLUMN extraDiscountPercent REAL DEFAULT 0");
       } catch (_) {}
     }
   }

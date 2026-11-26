@@ -463,7 +463,8 @@ class _PosScreenState extends State<PosScreen> {
                         ),
                       ),
                     ],
-                    if (med.discountPercent > 0) ...[
+                    if (med.discountPercent > 0 ||
+                        med.extraDiscountPercent > 0) ...[
                       const SizedBox(width: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -473,7 +474,9 @@ class _PosScreenState extends State<PosScreen> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          '${med.discountPercent.toInt()}% Off',
+                          med.extraDiscountPercent > 0
+                              ? '${med.totalDiscountPercent.toInt()}% Off (${med.discountPercent.toInt()}%+${med.extraDiscountPercent.toInt()}%)'
+                              : '${med.discountPercent.toInt()}% Off',
                           style: const TextStyle(
                             fontSize: 9.5,
                             fontWeight: FontWeight.bold,
@@ -697,6 +700,11 @@ class _CheckoutModalState extends State<_CheckoutModal> {
   @override
   void initState() {
     super.initState();
+    if (_saleType == InvoiceType.wholesale) {
+      for (final item in widget.cart.values) {
+        item.discountPercent = item.medicine.totalDiscountPercent;
+      }
+    }
     _paidCtrl = TextEditingController(
         text: _calculateGrandTotal().toStringAsFixed(0));
   }
@@ -967,6 +975,17 @@ class _CheckoutModalState extends State<_CheckoutModal> {
                     setState(() {
                       _saleType = set.first;
                       _selectedCustomer = null;
+                      for (final item in widget.cart.values) {
+                        if (_saleType == InvoiceType.wholesale) {
+                          item.discountPercent =
+                              item.medicine.totalDiscountPercent;
+                        } else {
+                          item.discountPercent = 0.0;
+                        }
+                      }
+                      widget.onCartUpdated();
+                      _paidCtrl.text =
+                          _calculateGrandTotal().toStringAsFixed(0);
                     });
                   },
                 ),
