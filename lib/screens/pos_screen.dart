@@ -151,6 +151,7 @@ class _PosScreenState extends State<PosScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => _CheckoutModal(
         cart: _cart,
@@ -329,8 +330,11 @@ class _PosScreenState extends State<PosScreen> {
   Widget _buildMobileLayout(List<Medicine> filtered) {
     return Column(
       children: [
-        _buildSearchAndFilterBar(),
-        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 10, 14, 0),
+          child: _buildSearchAndFilterBar(),
+        ),
+        const SizedBox(height: 6),
         Expanded(
           child: filtered.isEmpty
               ? const EmptyState(
@@ -575,14 +579,14 @@ class _PosScreenState extends State<PosScreen> {
   Widget _buildMobileFloatingCartBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F243A).withValues(alpha: 0.12),
+            color: Color(0x1F0F243A),
             blurRadius: 18,
-            offset: const Offset(0, -4),
+            offset: Offset(0, -4),
           ),
         ],
       ),
@@ -807,6 +811,7 @@ class _CheckoutModalState extends State<_CheckoutModal> {
           }).toList();
 
     Widget body = SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -1330,20 +1335,35 @@ class _CheckoutModalState extends State<_CheckoutModal> {
       return body;
     }
 
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom +
+        MediaQuery.of(context).padding.bottom +
+        24;
+
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x33000000),
+            blurRadius: 24,
+            offset: Offset(0, -6),
+          ),
+        ],
       ),
       padding: EdgeInsets.only(
         top: 14,
         left: 20,
         right: 20,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        bottom: bottomPadding,
       ),
       constraints:
           BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
-      child: body,
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: body,
+      ),
     );
   }
 

@@ -122,7 +122,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
         // Mobile / Small Screen Layout with Floating Frosted Glass Bar
         return Scaffold(
-          extendBody: true,
+          extendBody: false,
           backgroundColor: AppColors.background,
           drawer: _buildAppDrawer(isPermanent: false),
           body: Container(
@@ -142,43 +142,40 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               children: mobileScreens,
             ),
           ),
-          bottomNavigationBar: Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.88),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.8), width: 1.2),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0F243A).withValues(alpha: 0.12),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-                child: SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildNavItem(0, Icons.dashboard_outlined,
-                            Icons.dashboard_rounded, 'Dashboard'),
-                        _buildNavItem(1, Icons.point_of_sale_outlined,
-                            Icons.point_of_sale_rounded, 'POS Sale'),
-                        _buildNavItem(2, Icons.medication_outlined,
-                            Icons.medication_rounded, 'Medicines'),
-                        _buildNavItem(3, Icons.people_outline_rounded,
-                            Icons.people_rounded, 'Customers'),
-                      ],
-                    ),
+          bottomNavigationBar: SafeArea(
+            top: false,
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                    color: const Color(0x33CBD5E1), width: 1.2),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0F243A).withValues(alpha: 0.10),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildNavItem(0, Icons.dashboard_outlined,
+                          Icons.dashboard_rounded, 'Dashboard'),
+                      _buildNavItem(1, Icons.point_of_sale_outlined,
+                          Icons.point_of_sale_rounded, 'POS Sale'),
+                      _buildNavItem(2, Icons.medication_outlined,
+                          Icons.medication_rounded, 'Medicines'),
+                      _buildNavItem(3, Icons.people_outline_rounded,
+                          Icons.people_rounded, 'Customers'),
+                    ],
                   ),
                 ),
               ),

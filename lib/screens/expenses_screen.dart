@@ -311,8 +311,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                 _buildExpenseCard(_expenses[i]),
                           )
                         : ListView.separated(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
                             itemCount: _expenses.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: 10),

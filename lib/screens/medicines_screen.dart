@@ -314,8 +314,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                       )
                     : isDesktop
                         ? GridView.builder(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 460,
@@ -328,8 +327,7 @@ class _MedicinesScreenState extends State<MedicinesScreen> {
                                 _buildMedicineCard(_filtered[index]),
                           )
                         : ListView.separated(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
                             itemCount: _filtered.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: 10),

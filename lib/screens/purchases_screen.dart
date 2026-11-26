@@ -267,6 +267,7 @@ class _PurchasesScreenState extends State<PurchasesScreen>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) {
@@ -278,22 +279,37 @@ class _PurchasesScreenState extends State<PurchasesScreen>
           double paid = double.tryParse(paidCtrl.text.trim()) ?? 0.0;
           double remaining = totalAmount - paid;
 
+          final bottomPadding = MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.of(context).padding.bottom +
+              24;
+
           return Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.95),
+            decoration: const BoxDecoration(
+              color: Colors.white,
               borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(24)),
+                  BorderRadius.vertical(top: Radius.circular(24)),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x33000000),
+                  blurRadius: 24,
+                  offset: Offset(0, -6),
+                ),
+              ],
             ),
             padding: EdgeInsets.only(
               top: 20,
               left: 20,
               right: 20,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              bottom: bottomPadding,
             ),
             constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height * 0.9),
-            child: SingleChildScrollView(
-              child: Column(
+            child: SafeArea(
+              top: false,
+              bottom: true,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -636,7 +652,8 @@ class _PurchasesScreenState extends State<PurchasesScreen>
                 ],
               ),
             ),
-          );
+          ),
+        );
         },
       ),
     );

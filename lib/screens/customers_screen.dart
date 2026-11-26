@@ -475,7 +475,7 @@ class _CustomersScreenState extends State<CustomersScreen>
 
     if (isDesktop) {
       return GridView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 460,
           mainAxisExtent: 110,
@@ -489,7 +489,7 @@ class _CustomersScreenState extends State<CustomersScreen>
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
       itemCount: customers.length,
       separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemBuilder: (context, i) =>

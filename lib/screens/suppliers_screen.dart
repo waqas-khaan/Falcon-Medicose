@@ -285,7 +285,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                       )
                     : isDesktop
                         ? GridView.builder(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 460,
@@ -298,8 +298,7 @@ class _SuppliersScreenState extends State<SuppliersScreen> {
                                 _buildSupplierCard(_filtered[i]),
                           )
                         : ListView.separated(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
                             itemCount: _filtered.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: 10),

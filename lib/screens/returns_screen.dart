@@ -454,8 +454,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                                 _buildCustomerReturnCard(_customerReturns[i]),
                           )
                         : ListView.separated(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
+                            padding: const EdgeInsets.fromLTRB(16, 10, 16, 88),
                             itemCount: _customerReturns.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: 10),
@@ -488,8 +487,7 @@ class _ReturnsScreenState extends State<ReturnsScreen>
                                 _buildSupplierReturnCard(_supplierReturns[i]),
                           )
                         : ListView.separated(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
+                            padding: const EdgeInsets.fromLTRB(16, 10, 16, 88),
                             itemCount: _supplierReturns.length,
                             separatorBuilder: (_, __) =>
                                 const SizedBox(height: 10),
