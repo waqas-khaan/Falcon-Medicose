@@ -1,4 +1,5 @@
 import 'package:url_launcher/url_launcher.dart';
+import '../utils/formatters.dart';
 
 class SmsService {
   static Future<void> sendLoanSms({
@@ -6,21 +7,17 @@ class SmsService {
     required String patientName,
     required double amount,
     required double balance,
+    String storeName = 'Falcon Medicose',
+    String contactPhone = '',
   }) async {
-    String message =
-        '''
-Falcon Medicose
-
-Dear $patientName,
-
-Loan Added
-
-Amount : Rs.${amount.toStringAsFixed(0)}
-
-Current Balance : Rs.${balance.toStringAsFixed(0)}
-
-Thank You
-''';
+    final contactLine =
+        contactPhone.isNotEmpty ? '\nContact: $contactPhone' : '';
+    final message = 'Dear $patientName,\n'
+        'This is a friendly reminder from $storeName.\n\n'
+        'Loan Added: ${Formatters.formatCurrency(amount)}\n'
+        'Remaining Balance: ${Formatters.formatCurrency(balance)}\n\n'
+        'Please clear your remaining balance at your earliest convenience. Thank you!'
+        '$contactLine';
 
     await _openSmsComposer(phone, message);
   }
@@ -30,21 +27,22 @@ Thank You
     required String patientName,
     required double amount,
     required double balance,
+    double? totalPayment,
+    String storeName = 'Falcon Medicose',
+    String contactPhone = '',
   }) async {
-    String message =
-        '''
-Falcon Medicose
-
-Dear $patientName,
-
-Payment Received
-
-Amount : Rs.${amount.toStringAsFixed(0)}
-
-Remaining Balance : Rs.${balance.toStringAsFixed(0)}
-
-Thank You
-''';
+    final totalLine = totalPayment != null
+        ? 'Total Payment: ${Formatters.formatCurrency(totalPayment)}\n'
+        : '';
+    final contactLine =
+        contactPhone.isNotEmpty ? '\nContact: $contactPhone' : '';
+    final message = 'Dear $patientName,\n'
+        'This is a friendly reminder from $storeName.\n\n'
+        '$totalLine'
+        'Received: ${Formatters.formatCurrency(amount)}\n'
+        'Remaining Balance: ${Formatters.formatCurrency(balance)}\n\n'
+        'Please clear your remaining balance at your earliest convenience. Thank you!'
+        '$contactLine';
 
     await _openSmsComposer(phone, message);
   }

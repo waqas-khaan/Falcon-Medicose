@@ -146,8 +146,11 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen>
     final phone =
         _customer!.phone?.replaceAll(RegExp(r'[^0-9]'), '') ?? '';
     final msg = 'Dear ${_customer!.name},\n'
-        'This is a friendly reminder from ${_settings.storeName}. Your current balance is ${Formatters.formatCurrency(_customer!.remainingAmount, _settings.currency)}.\n'
-        'Please clear your dues at your earliest convenience. Thank you!\n'
+        'This is a friendly reminder from ${_settings.storeName}.\n\n'
+        'Total Payment: ${Formatters.formatCurrency(_customer!.totalAmount, _settings.currency)}\n'
+        'Received: ${Formatters.formatCurrency(_customer!.paidAmount, _settings.currency)}\n'
+        'Remaining Balance: ${Formatters.formatCurrency(_customer!.remainingAmount, _settings.currency)}\n\n'
+        'Please clear your remaining balance at your earliest convenience. Thank you!\n'
         'Contact: ${_settings.phone}';
 
     if (viaWhatsApp) {
